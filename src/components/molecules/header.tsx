@@ -26,7 +26,9 @@ export const Header = () => {
 
     return (
         <div className='flex items-center justify-between px-[32px] py-[18px]'>
-            <img src="/assets/images/logo/cinema-logo.png" alt="logo-cinema" />
+            <a href="/">
+                <img src="/assets/images/logo/cinema-logo.png" alt="logo-cinema" />
+            </a>
 
             <div className='flex gap-[20px] items-center'>
                 {!isLogin && (

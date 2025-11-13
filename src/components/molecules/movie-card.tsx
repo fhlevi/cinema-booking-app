@@ -3,17 +3,17 @@ import { Card } from '@components/atoms/card'
 import type { Studio } from '@type/studios'
 
 interface Props extends Pick<Studio, 'name' | 'id'> {
-    image: string;
-    onClick: (id: number) => void;
+    image?: string;
+    onClick?: (id: number) => void;
 }
 
-export const StudioCard = ({ 
+export const MovieCard = ({ 
     id, 
     name, 
     image, 
     onClick 
 }: Props) => {
-    const handleClick = useCallback(() => onClick(id), [id]);
+    const handleClick = useCallback(() => onClick && onClick(id || 1), [id]);
 
     return (
         <section
@@ -24,7 +24,7 @@ export const StudioCard = ({
                 <img src={image} alt={name} className="cover rounded-[20px] h-full" />
             </Card>
 
-            <p className='text-center font-semibold text-white text-[20px]'>{name}</p>
+            {name && <p className='text-center font-semibold text-white text-[20px]'>{name}</p>}
         </section>
     );
 };

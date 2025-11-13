@@ -6,7 +6,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@components/atoms/dialog';
-import { StudioCard } from '@components/molecules/studio-card';
+import { MovieCard } from '@components/molecules/movie-card';
 import { imagesStudio } from '@constants/studios';
 import { getStudios } from '@services/studio';
 import type { Studio } from '@type/studios';
@@ -32,14 +32,13 @@ export const StudioLists = () => {
         const token = findToken();
         
         if (!token) setShowDialog(true); 
-        // else window.location.href = `/seats?studioId=${id}`;
-        else window.location.href = '/studio';
+        else window.location.href = `/studio?studioId=${id}`;
     };
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[50px] items-center content-center">
             {studios?.map((studio, index) => (
-                <StudioCard
+                <MovieCard
                     key={studio.id}
                     id={studio.id}
                     name={studio.name}

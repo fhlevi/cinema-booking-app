@@ -1,6 +1,6 @@
 import { QueryProvider } from '@components/molecules/query-provider';
 import { LoginForm } from '@components/organisms/login-form';
-import { AuthWrapper } from '@components/organisms/auth-wrapper';
+import { AuthWrapper } from '@components/molecules/auth-wrapper';
 import { Card } from '@components/atoms/card';
 import { ArrowLeft } from 'lucide-react';
 

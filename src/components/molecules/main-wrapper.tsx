@@ -14,7 +14,7 @@ export const MainWrapper = ({
         <QueryProvider>
             <Wrapper styles="w-full">
                 <Header />
-                <section className='max-w-[1224px] mx-auto px-[15px] pt-[112px]'>
+                <section className='max-w-[1224px] mx-auto px-[15px] py-[112px]'>
                     {children}
                 </section>
             </Wrapper>

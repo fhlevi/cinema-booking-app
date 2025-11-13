@@ -1,5 +1,5 @@
-import { MainWrapper } from '@components/organisms/main-wrapper';
-import { StudioLists } from '@components/organisms/studio-lists';
+import { MainWrapper } from '@components/molecules/main-wrapper';
+import { StudioLists } from '@components/organisms/movie-lists';
 
 export const MoviePage = () => {
     return (

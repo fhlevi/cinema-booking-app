@@ -7,7 +7,9 @@ export const getStudios = async () => {
     return response.data;
 };
 
-export const getSeats = async (id: string | number) => {
+export const getSeats = async ({ queryKey = [] }: any) => {
+    const [, { id }] = queryKey;
+
     const response = await HTTPClientNonAuth().get(`${prefix}/${id}/seats`);
     return response.data;
 };

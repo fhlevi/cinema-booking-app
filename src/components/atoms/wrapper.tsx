@@ -8,7 +8,8 @@ interface Props {
 }
 
 const Primitive = styled.section`
-    height: 100vh;
+    height: 100%;
+    min-height: 100dvh;
     // background: radial-gradient(ellipse at 100% 10%, #006233 0%, #000 40%);
     background: 
         radial-gradient(circle 50rem at 95% 10%, #006233, transparent),

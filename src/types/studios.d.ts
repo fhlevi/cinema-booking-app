@@ -1,6 +1,6 @@
 export type Studio = {
-    id: number;
-    name: string;
+    id?: number;
+    name?: string;
     total_seats: number;
     created_at: string;
     updated_at: string;
