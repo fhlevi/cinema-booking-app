@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  apps:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: cinema-booking
+    env_file: 
+      - .env
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+    restart: unless-stopped
+    ports:
+      - "3125:3125"
+      
+networks:
+    default:
