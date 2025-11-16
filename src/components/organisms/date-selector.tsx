@@ -1,5 +1,5 @@
-import React from 'react';
-import { cn } from '@lib/cn';
+import { Heading } from '@components/atoms/heading';
+import { SelectorChip } from '@components/atoms/selector-chip';
 
 interface DateSelectorProps {
     dates: { id: number; date: string }[];
@@ -14,20 +14,17 @@ export const DateSelector: React.FC<DateSelectorProps> = ({
 }) => {
     return (
         <div className="flex flex-col space-y-[37px]">
-            <h1 className="text-[46px] font-bold text-white">Date</h1>
+            <Heading size="xl">Date</Heading>
             <div className="flex space-x-[16px]">
                 {dates.map((record) => (
-                    <div
+                    <SelectorChip
                         key={record.id}
-                        className={cn(
-                            'flex gap-[14px] bg-transparent py-[15px] px-[15px] text-white rounded-[8px] h-[85px] w-[85px] items-center cursor-pointer',
-                            selectedDateId === record.id && 'bg-[#1DE782]',
-                            selectedDateId !== record.id && 'border border-white',
-                        )}
+                        isSelected={selectedDateId === record.id}
                         onClick={() => onSelectDate(record.id)}
+                        className="p-[15px] rounded-[8px] h-[85px] w-[85px]"
                     >
                         <p className="text-[16px] text-center">{record.date}</p>
-                    </div>
+                    </SelectorChip>
                 ))}
             </div>
         </div>

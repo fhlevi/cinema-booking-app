@@ -1,12 +1,12 @@
 import { Button } from '@components/atoms/button'
+import { Input } from '@components/atoms/input';
 import {
-	Form,
-	FormField,
-	FormControl,
-	FormMessage,
-	Input,
-	FormLabel
-} from '@components/atoms/input'
+    Form,
+    FormField,
+    FormControl,
+    FormMessage,
+    FormLabel,
+} from '@components/molecules/form';
 import { Submit } from '@radix-ui/react-form'
 import { signUp } from '@services/auth'
 import type { RegisterForm as RegisterFormType } from '@type/auth'

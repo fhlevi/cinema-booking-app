@@ -1,39 +1,33 @@
-import styled from '@emotion/styled';
+import React from 'react';
+import { cn } from '@lib/cn';
 
-const ButtonPrimitive = styled.button<Record<string, any>>`
-    color: #ffffff;
-    padding: 10px 16px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    background-color: #1DE782;
-    border: none;
-
-    &:hover {
-        opacity: 0.9;
-    }
-
-    &:disabled {
-        background-color: #727272;
-        cursor: not-allowed;
-    }
-
-    ${props => props.outline && `
-        border: 1px solid #ffffff;
-        background-color: transparent;
-    `}
-
-    ${props => props.danger && `
-        background-color: #DC0000;
-    `}
-`;
-
-export const Button = (props: React.ComponentPropsWithoutRef<'button'> & Record<string, any>) => {
-    return (
-        <ButtonPrimitive {...props}>
-            {props.children}
-        </ButtonPrimitive>
-    )
+interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
+    outline?: boolean;
+    danger?: boolean;
 }
+
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+    ({ className, children, outline, danger, ...props }, ref) => {
+        return (
+            <button
+                ref={ref}
+                className={cn(
+                    'text-white py-[10px] px-[16px] text-base cursor-pointer transition-colors duration-300 ease-in-out',
+                    'hover:opacity-90',
+                    'disabled:bg-[#727272] disabled:cursor-not-allowed',
+                    {
+                        'bg-[#1DE782]': !outline && !danger,
+                        'border border-white bg-transparent': outline,
+                        'bg-[#DC0000]': danger,
+                    },
+                    className,
+                )}
+                {...props}
+            >
+                {children}
+            </button>
+        );
+    },
+);
 
 Button.displayName = 'Button';

@@ -1,10 +1,21 @@
 export type Studio = {
-    id?: number;
-    name?: string;
+    id: number;
+    name: string;
     total_seats: number;
     created_at: string;
     updated_at: string;
 };
+
+export type Seat = {
+    id: number;
+    is_available: boolean;
+    seat_number: string;
+    studio: Studio;
+    studio_id: number;
+    studio_name: string;
+    created_at: string;
+    updated_at: string;
+}
 
 export type StudioDate = {
     id: number;

@@ -1,5 +1,6 @@
 import React from 'react';
-import { cn } from '@lib/cn';
+import { Heading } from '@components/atoms/heading';
+import { SelectorChip } from '@components/atoms/selector-chip';
 
 interface TimeSelectorProps {
     times: { id: number; time: string }[];
@@ -14,20 +15,17 @@ export const TimeSelector: React.FC<TimeSelectorProps> = ({
 }) => {
     return (
         <div className="flex flex-col space-y-[37px]">
-            <h1 className="text-[46px] font-bold text-white">Time</h1>
+            <Heading size="xl">Time</Heading>
             <div className="flex space-x-[16px]">
                 {times.map((record) => (
-                    <div
+                    <SelectorChip
                         key={record.id}
-                        className={cn(
-                            'flex gap-[14px] bg-transparent py-[15px] px-[15px] text-white rounded-[8px] h-[40px] w-[77px] items-center cursor-pointer',
-                            selectedTimeId === record.id && 'bg-[#1DE782]',
-                            selectedTimeId !== record.id && 'border border-white',
-                        )}
+                        isSelected={selectedTimeId === record.id}
                         onClick={() => onSelectTime(record.id)}
+                        className="p-[15px] rounded-[8px] h-[40px] w-[77px]"
                     >
                         <p className="text-[16px] text-center">{record.time}</p>
-                    </div>
+                    </SelectorChip>
                 ))}
             </div>
         </div>

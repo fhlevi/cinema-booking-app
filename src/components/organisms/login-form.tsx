@@ -1,12 +1,12 @@
 import { Button } from '@components/atoms/button'
+import { Input } from '@components/atoms/input';
 import {
-	Form,
-	FormField,
-	FormControl,
-	FormMessage,
-	Input,
-	FormLabel
-} from '@components/atoms/input'
+    Form,
+    FormField,
+    FormControl,
+    FormMessage,
+    FormLabel,
+} from '@components/molecules/form';
 import { setToken } from '@lib/cookie';
 import { Submit } from '@radix-ui/react-form'
 import { signIn, verifyToken } from '@services/auth';
@@ -26,8 +26,7 @@ export const LoginForm = () => {
 
 	const mutationTokenVerify = useMutation(verifyToken, {
         onSuccess: (response) => {
-            setToken(response.token);
-			window.location.href = '/'
+			if (response.valid) window.location.href = '/'
         },
         onError: (error) => {
             console.error('Verify failed: ', error)
@@ -37,6 +36,7 @@ export const LoginForm = () => {
 	const mutation = useMutation(signIn, {
 			onSuccess: (response) => {
 				mutationTokenVerify.mutate({ token: response.token })
+				setToken(response.token);
 			},
 			onError: (error) => {
 				console.error('Login failed:', error);

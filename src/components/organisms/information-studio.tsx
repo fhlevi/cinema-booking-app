@@ -1,44 +1,35 @@
-import React from 'react'
-import { getStudios } from '@services/studio';
-import { useQuery } from 'react-query';
-import type { Studio } from '@type/studios';
-import { MovieCard } from '@components/molecules/movie-card';
-import { imagesStudio } from '@constants/studios';
+import { Text } from '@components/atoms/text';
+import { Card } from '@components/atoms/card';
 
-export const InformationStudio = () => {
-    const { data: studios, isLoading, isError } = useQuery<Studio[]>(
-        'studios', 
-        getStudios
-    );
+interface Props {
+    studioImage: string,
+    studioName: string
+}
 
-    const [studioId, setStudioId] = React.useState<string|number|null>();
-
-    React.useEffect(() => {
-        const queryParams = new URLSearchParams(window.location.search);
-        const queryValue = queryParams.get('studioId')
-        setStudioId(queryValue)
-    }, [])
-
-    const studioSelected = studios?.find((studio) => studio.id === Number(studioId));
-    const indexImage = studios?.findIndex((studio) => studio.id === Number(studioId));
-
+export const InformationStudio = ({ 
+    studioImage,
+    studioName
+}: Props) => {
     return (
         <section className='h-auto flex flex-col space-y-[35px] w-[250px]'>
-            <MovieCard 
-                image={imagesStudio[indexImage || 0]}
-            />
-            <div className='flex flex-col space-y-[18px] text-sm text-white'>
-                <p className='text-[24px]'>{studioSelected?.name}</p>
-                <p>Movie description here...</p>
+            <div className="flex flex-col gap-[10px] text-[14px] font-regular">
+                <Card className="h-[411px] block rounded-[20px] cursor-pointer" boxShadow>
+                    <img src={studioImage} alt="studio-image" className="cover rounded-[20px] h-full" />
+                </Card>
+            </div>
+
+            <div className='flex flex-col space-y-[18px] text-sm'>
+                <Text className='text-[24px]'>{studioName}</Text>
+                <Text>Movie description here...</Text>
 
                 <section className='grid grid-cols-2'>
-                    <p>Duration</p>
-                    <p>1h 58m</p>
+                    <Text>Duration</Text>
+                    <Text>1h 58m</Text>
                 </section>
 
                 <section className='grid grid-cols-2'>
-                    <p>Type</p>
-                    <p>Action</p>
+                    <Text>Type</Text>
+                    <Text>Action</Text>
                 </section>
             </div>
         </section>

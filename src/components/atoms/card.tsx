@@ -1,39 +1,33 @@
-import React from 'react'
-import styled from '@emotion/styled';
+import React from 'react';
 import { cn } from '@lib/cn';
 
-interface Props {
-    children?: React.ReactNode
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     background?: string;
     boxShadow?: boolean;
-    className?: string;
 }
 
-const CardPrimitive = styled.div<{ 
-    background?: string;
-    boxShadow?: boolean;
-}>`
-    position: relative;
-    background: ${props => props.background || 'hsla(0,0%,100%,.6)'};
+export const Card = React.forwardRef<HTMLDivElement, CardProps>(
+    ({ className, children, background, boxShadow, style, ...props }, ref) => {
+        const cardStyle = background ? { ...style, background } : style;
 
-    ${props => props.boxShadow && `
-        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    `}
-`;
+        return (
+            <div
+                ref={ref}
+                className={cn(
+                    'relative',
+                    {
+                        'bg-white/60': !background,
+                        'shadow-[0_1px_4px_rgba(0,0,0,0.16)]': boxShadow,
+                    },
+                    className,
+                )}
+                style={cardStyle}
+                {...props}
+            >
+                {children}
+            </div>
+        );
+    },
+);
 
-export const Card = ({
-    children,
-    background,
-    boxShadow,
-    className,
-}: Props) => {
-    return (
-        <CardPrimitive 
-            background={background}
-            boxShadow={boxShadow}
-            className={cn(className)}
-        >
-            {children}
-        </CardPrimitive>
-    )
-}
+Card.displayName = 'Card';

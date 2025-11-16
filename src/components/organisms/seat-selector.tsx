@@ -1,37 +1,36 @@
-import { getSeats } from '@services/studio';
-import type { Studio } from '@type/studios';
-import React from 'react'
-import { useQuery } from 'react-query';
+import { SeatBox } from '@components/atoms/seat-box';
+import { ScreenBar } from '@components/atoms/screen-bar';
+import type { Seat } from '@type/studios';
+import type React from 'react';
 
-interface Props {}
+interface Props {
+    seats: Seat[];
+    seatsId: number[];
+    onSeatChange: (seatId: number) => void;
+}
 
 export const SeatSelector = ({
-
+    seats,
+    seatsId,
+    onSeatChange
 }: Props) => {
-    const [studioId, setStudioId] = React.useState<string|number|null>();
-
-    const { data: seats, isLoading, isError } = useQuery<Studio[]>(
-        ['seats', { id: studioId }], 
-        getSeats,
-        {
-            enabled: !!studioId
-        }
-    );
-    
-    React.useEffect(() => {
-        const queryParams = new URLSearchParams(window.location.search);
-        const queryValue = queryParams.get('studioId')
-        setStudioId(queryValue)
-    }, [])
-
     return (
-        <section className='w-[508px] mx-auto space-y-8'>
-            <div className='grid grid-cols-10 gap-2'>
-                {seats?.map((seatVal) => (
-                    <div key={seatVal.id} className='bg-white py-[8px] px-[4px] rounded-[6px] text-black text-center font-semibold text-[12px]'>{seatVal?.seat_number}</div>
-                ))}
+        <section className="w-[508px] mx-auto space-y-8">
+            <div className="grid grid-cols-10 gap-2">
+                {seats
+                    ?.slice()
+                    .sort((a, b) => a.id - b.id)
+                    .map((seatVal) => (
+                        <SeatBox 
+                            key={seatVal.id} 
+                            className='cursor-pointer'
+                            seatNumber={seatVal.seat_number} 
+                            active={seatsId.includes(seatVal.id)}
+                            onClick={() => onSeatChange(seatVal.id)}
+                        />
+                    ))}
             </div>
-            <div className='h-[42px] bg-white rounded-full text-black text-center font-semibold py-2'>Screen</div>
+            <ScreenBar />
         </section>
-    )
-}
+    );
+};
