@@ -13,12 +13,13 @@ import type { Studio } from '@type/studios';
 import { imagesStudio } from '@constants/studios';
 import { SeatsProvider, useSeats } from '@contexts/seats-context';
 import useLocalStorage from '@hooks/use-local-storage';
+import useQueryParam from '@hooks/use-query-params';
 
 const CinemaStudioPageContent = () => {
     const [locationSelected, setLocationSelected] = useLocalStorage<string>('location', 'Bogor');
     const [dateIdSelected, setDateIdSelected] = useLocalStorage<number>('date', 1);
     const [timeIdSelected, setTimeIdSelected] = useLocalStorage<number>('time', 1);
-    const [studioId, setStudioId] = React.useState<string|number|null>();
+    const studioId = useQueryParam('studioId');
     const { resetSeats } = useSeats();
 
     const { data: studios = [], isLoading, isError } = useQuery<Studio[]>({
@@ -44,10 +45,7 @@ const CinemaStudioPageContent = () => {
 
     React.useEffect(() => {
         resetSeats();
-        const queryParams = new URLSearchParams(window.location.search);
-        const queryValue = queryParams.get('studioId')
-        setStudioId(queryValue)
-    }, [])
+    }, [resetSeats])
 
     const studioSelected = studios?.find((studio) => studio.id === Number(studioId)) as Studio;
     const indexImage = studios.findIndex((studio) => studio.id === Number(studioId)) as number;

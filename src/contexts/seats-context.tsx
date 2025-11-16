@@ -25,7 +25,7 @@ export const SeatsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         localStorage.setItem('seatsId', JSON.stringify(seatsId));
     }, [seatsId]);
 
-    const handleSeatClick = (seatId: number) => {
+    const handleSeatClick = React.useCallback((seatId: number) => {
         setSeatsId(prevSeats => {
             if (prevSeats.includes(seatId)) {
                 return prevSeats.filter(id => id !== seatId);
@@ -33,21 +33,21 @@ export const SeatsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 return [...prevSeats, seatId];
             }
         });
-    };
+    }, []);
 
-    const resetSeats = () => {
+    const resetSeats = React.useCallback(() => {
         setSeatsId([]);
-    }
+    }, []);
 
     const totalPayment = 35000 * seatsId.length;
 
-    const getSeatSelected = (seats: Seat[]) => {
+    const getSeatSelected = React.useCallback((seats: Seat[]) => {
         if (!seats) return '';
         return seats
             .filter(seat => seatsId.includes(seat.id))
             .map(seat => seat.seat_number)
             .join(', ');
-    };
+    }, [seatsId]);
 
     return (
         <SeatsContext.Provider value={{ seatsId, handleSeatClick, totalPayment, getSeatSelected, resetSeats }}>

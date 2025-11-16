@@ -10,9 +10,10 @@ import { Text } from '@components/atoms/text';
 import { Button } from '@components/atoms/button';
 import { formatCurrency } from '@lib/string';
 import { SeatsProvider, useSeats } from '@contexts/seats-context';
+import useQueryParam from '@hooks/use-query-params';
 
 const CinemaSeatsPageContent = () => {
-    const [studioId, setStudioId] = React.useState<string | null>(null);
+    const studioId = useQueryParam('studioId');
     const { seatsId, handleSeatClick, totalPayment, getSeatSelected } = useSeats();
 
     const { data: seats = [], isLoading, isError } = useQuery<Seat[]>({
@@ -22,12 +23,8 @@ const CinemaSeatsPageContent = () => {
     });
 
     const handleBack = () => window.history.back();
-
-    React.useEffect(() => {
-        const queryParams = new URLSearchParams(window.location.search);
-        const queryValue = queryParams.get('studioId');
-        setStudioId(queryValue);
-    }, []);
+    
+    const handleOrder = () => window.location.href = '/order';
 
     const seatSelected = getSeatSelected(seats);
 
@@ -50,7 +47,7 @@ const CinemaSeatsPageContent = () => {
                 </div>
                 <div className='flex space-x-[30px] items-center justify-center'>
                     <Button className='h-[60px] w-[219px] rounded-[8px] text-[18px]' outline onClick={handleBack}>Back</Button>
-                    <Button className='h-[60px] w-[279px] rounded-[8px] text-[18px]'>Proceed Payment</Button>
+                    <Button className='h-[60px] w-[279px] rounded-[8px] text-[18px]' onClick={handleOrder}>Proceed Payment</Button>
                 </div>
             </section>
         </MainWrapper>
