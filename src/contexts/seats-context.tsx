@@ -37,6 +37,7 @@ export const SeatsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const resetSeats = React.useCallback(() => {
         setSeatsId([]);
+        localStorage.removeItem('seatsId');
     }, []);
 
     const totalPayment = 35000 * seatsId.length;

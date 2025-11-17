@@ -7,37 +7,27 @@ import { TimeSelector } from '@components/organisms/time-selector';
 import { InformationStudio } from '@components/organisms/information-studio';
 import { StudioProcess } from '@components/organisms/studio-process';
 import { withQueryProvider } from '@providers/query-provider';
-import { getStudios } from '@services/studio';
-import { useQuery } from 'react-query';
 import type { Studio } from '@type/studios';
 import { imagesStudio } from '@constants/studios';
 import { SeatsProvider, useSeats } from '@contexts/seats-context';
-import useLocalStorage from '@hooks/use-local-storage';
 import useQueryParam from '@hooks/use-query-params';
+import { useStudios } from '@hooks/use-studios';
+import { StudioFiltersProvider, useStudioFilters } from '@contexts/studio-filters-context';
 
 const CinemaStudioPageContent = () => {
-    const [locationSelected, setLocationSelected] = useLocalStorage<string>('location', 'Bogor');
-    const [dateIdSelected, setDateIdSelected] = useLocalStorage<number>('date', 1);
-    const [timeIdSelected, setTimeIdSelected] = useLocalStorage<number>('time', 1);
+    const {
+        locationSelected,
+        setLocationSelected,
+        dateIdSelected,
+        setDateIdSelected,
+        timeIdSelected,
+        setTimeIdSelected
+    } = useStudioFilters();
+    
     const studioId = useQueryParam('studioId');
     const { resetSeats } = useSeats();
 
-    const { data: studios = [], isLoading, isError } = useQuery<Studio[]>({
-        queryKey: 'studios',
-        queryFn: getStudios
-    });
-
-    const handleSetLocation = useCallback((val: string) => {
-        setLocationSelected(val);
-    }, [setLocationSelected]);
-
-    const handleDateStudio = useCallback((dateId: number) => {
-        setDateIdSelected(dateId);
-    }, [setDateIdSelected]);
-
-    const handleTimeStudio = useCallback((timeId: number) => {
-        setTimeIdSelected(timeId);
-    }, [setTimeIdSelected]);
+    const { data: studios = [], isLoading, isError } = useStudios();
 
     const handleProcessed = useCallback((studioId: string|number|null|undefined) => {
         window.location.href = `/seats?studioId=${studioId}`
@@ -59,17 +49,17 @@ const CinemaStudioPageContent = () => {
                     <LocationSelector
                         locations={locationStudio}
                         selectedLocation={locationSelected}
-                        onSelectLocation={handleSetLocation}
+                        onSelectLocation={setLocationSelected}
                     />
                     <DateSelector
                         dates={datesStudio}
                         selectedDateId={dateIdSelected}
-                        onSelectDate={handleDateStudio}
+                        onSelectDate={setDateIdSelected}
                     />
                     <TimeSelector
                         times={timesStudio}
                         selectedTimeId={timeIdSelected}
-                        onSelectTime={handleTimeStudio}
+                        onSelectTime={setTimeIdSelected}
                     />
                 </div>
                 <div className='flex flex-col items-end justify-start space-y-[76px]'>
@@ -83,7 +73,9 @@ const CinemaStudioPageContent = () => {
 
 const CinemaStudioPageComponent = () => (
     <SeatsProvider>
-        <CinemaStudioPageContent />
+        <StudioFiltersProvider>
+            <CinemaStudioPageContent />
+        </StudioFiltersProvider>
     </SeatsProvider>
 );
 

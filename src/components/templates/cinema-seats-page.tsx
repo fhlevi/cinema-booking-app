@@ -3,27 +3,20 @@ import { MainWrapper } from '@components/templates/main-wrapper';
 import { SeatSelector } from '@components/organisms/seat-selector';
 import { Heading } from '@components/atoms/heading';
 import { withQueryProvider } from '@providers/query-provider';
-import { getSeats } from '@services/studio';
-import { useQuery } from 'react-query';
 import type { Seat } from '@type/studios';
 import { Text } from '@components/atoms/text';
 import { Button } from '@components/atoms/button';
 import { formatCurrency } from '@lib/string';
 import { SeatsProvider, useSeats } from '@contexts/seats-context';
 import useQueryParam from '@hooks/use-query-params';
+import { useSeatsQuery } from '@hooks/use-seats-query';
 
 const CinemaSeatsPageContent = () => {
     const studioId = useQueryParam('studioId');
     const { seatsId, handleSeatClick, totalPayment, getSeatSelected } = useSeats();
-
-    const { data: seats = [], isLoading, isError } = useQuery<Seat[]>({
-        queryKey: ['seats', { id: studioId }],
-        queryFn: getSeats,
-        enabled: !!studioId
-    });
+    const { data: seats = [], isLoading, isError } = useSeatsQuery(studioId);
 
     const handleBack = () => window.history.back();
-    
     const handleOrder = () => window.location.href = '/order';
 
     const seatSelected = getSeatSelected(seats);

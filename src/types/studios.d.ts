@@ -19,7 +19,7 @@ export type Seat = {
 
 export type StudioDate = {
     id: number;
-    date: string;
+    date: number;
 }
 
 export type StudioTime = {

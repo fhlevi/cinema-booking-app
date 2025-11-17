@@ -1,4 +1,5 @@
-import type { StudioDate, StudioTime } from "@type/studios";
+import type { StudioTime } from "@type/studios";
+import { generateNext6Days } from "@lib/date";
 
 export const imagesStudio: string[] = [
     'https://nos.jkt-1.neo.id/media.cinema21.co.id/movie-images/15STTU.jpg',
@@ -10,14 +11,7 @@ export const imagesStudio: string[] = [
 
 export const locationStudio: string[] = ['Bogor', 'Bekasi', 'Jakarta'];
 
-export const datesStudio: StudioDate[] = [
-    { id: 1, date: '10 Nov Mon' },
-    { id: 2, date: '12 Nov Tue' },
-    { id: 3, date: '13 Nov Wed' },
-    { id: 4, date: '14 Nov Thu' },
-    { id: 5, date: '15 Nov Fri' },
-    { id: 6, date: '16 Nov Sat' },
-]
+export const datesStudio = generateNext6Days();
 
 export const timesStudio: StudioTime[] = [
     { id: 1, time: '10:30' },

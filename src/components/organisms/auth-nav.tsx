@@ -4,12 +4,17 @@ import { findToken, removeToken } from '@lib/cookie';
 
 export const AuthNav = () => {
     const [isLogin, setIsLogin] = React.useState(false);
+    const [pathname, setPathname] = React.useState<string | null>(null);
 
     React.useEffect(() => {
         const token = findToken();
         if (token) {
             setIsLogin(true);
         }
+    }, []);
+    
+    React.useEffect(() => {
+        setPathname(window.location.pathname);
     }, []);
 
     const handleLogout = () => {
@@ -42,7 +47,7 @@ export const AuthNav = () => {
 
     return (
         <div className="flex gap-[20px] items-center">
-            <p className="text-white text-[18px]">My Ticket</p>
+            {!pathname?.includes('studio') && <p className="text-white text-[18px]">My Ticket</p>}
             <Button
                 className="rounded-[15px] min-w-[100px]"
                 onClick={handleLogout}

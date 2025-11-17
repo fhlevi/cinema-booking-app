@@ -1,8 +1,10 @@
 import { Heading } from '@components/atoms/heading';
 import { SelectorChip } from '@components/atoms/selector-chip';
+import { formatDateShort } from '@lib/date';
+import type { StudioDate } from '@type/studios';
 
 interface DateSelectorProps {
-    dates: { id: number; date: string }[];
+    dates: StudioDate[];
     selectedDateId: number;
     onSelectDate: (dateId: number) => void;
 }
@@ -21,9 +23,9 @@ export const DateSelector: React.FC<DateSelectorProps> = ({
                         key={record.id}
                         isSelected={selectedDateId === record.id}
                         onClick={() => onSelectDate(record.id)}
-                        className="p-[15px] rounded-[8px] h-[85px] w-[85px]"
+                        className="p-[15px] rounded-[8px] h-[85px] min-w-[85px]"
                     >
-                        <p className="text-[16px] text-center">{record.date}</p>
+                        <p className="text-[16px] text-center">{formatDateShort(record.date)}</p>
                     </SelectorChip>
                 ))}
             </div>
