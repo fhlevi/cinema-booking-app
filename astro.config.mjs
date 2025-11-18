@@ -9,6 +9,7 @@ export default defineConfig({
   compressHTML: true,
   server: {
     port: 3125,
+    host: true
   },
   vite: {
     plugins: [tailwindcss()],

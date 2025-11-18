@@ -6,12 +6,10 @@ RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-COPY package.json ./
+COPY package.json package-lock.json ./
 RUN npm install --legacy-peer-deps
 
 FROM base AS builder
-
-RUN apk add --no-cache
 
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -24,12 +22,15 @@ FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/package.json ./package.json
+COPY --from=deps /app/package-lock.json ./package-lock.json
+COPY . .
 
 EXPOSE 3125
 
-CMD ["node", "./dist/server/entry.mjs"]
+CMD ["npm", "run", "preview"]
 
 
 
