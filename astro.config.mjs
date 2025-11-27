@@ -8,8 +8,8 @@ export default defineConfig({
   integrations: [react()],
   compressHTML: true,
   server: {
-    port: 3125,
-    host: true
+    host: process.env.HOST || '0.0.0.0',
+    port: parseInt(process.env.PORT || '3000'),
   },
   vite: {
     plugins: [tailwindcss()],

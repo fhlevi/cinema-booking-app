@@ -1,12 +1,37 @@
 services:
-  apps:
+  dev:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile.dev
+    container_name: cinema-booking-app-dev
+    restart: unless-stopped
+    ports:
+      - "3102:3000"
+    volumes:
+      - .:/app                    # Mount semua source code
+      - /app/node_modules         # Jangan overwrite node_modules
+      - /app/.astro               # Cache Vite
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0
+      - PORT=3000
+    networks:
+      - app-network
+  prod:
     build: 
       context: .
       dockerfile: ./Dockerfile
-    container_name: cinema-booking-app
+    container_name: cinema-booking-app-prod
     restart: unless-stopped
     ports:
-      - "3125:3125"
+      - "3103:3000"
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=3000
+    networks:
+      - app-network
       
 networks:
-    default:
+  app-network:
+    driver: bridge

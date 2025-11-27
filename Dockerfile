@@ -28,7 +28,7 @@ COPY --from=deps /app/package.json ./package.json
 COPY --from=deps /app/package-lock.json ./package-lock.json
 COPY . .
 
-EXPOSE 3125
+EXPOSE 3000
 
 CMD ["npm", "run", "preview"]
 
