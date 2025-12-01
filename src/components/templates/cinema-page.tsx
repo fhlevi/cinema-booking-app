@@ -5,17 +5,25 @@ import { AuthDialog } from '@components/molecules/auth-dialog';
 import React from 'react';
 import { withQueryProvider } from '@providers/query-provider';
 import { useStudios } from '@hooks/use-studios';
-import { StudioFiltersProvider, useStudioFilters } from '@contexts/studio-filters-context';
+import { BookingProvider, useBooking } from '@contexts/booking-context';
+import { findToken } from '@lib/cookie';
 
 const CinamePageContent = () => {
     const [showDialog, setShowDialog] = React.useState(false);
-    const { resetFilters } = useStudioFilters();
+    const { resetFilters } = useBooking();
 
     const { data: studios, isLoading, isError } = useStudios();
 
     React.useEffect(() => {
         resetFilters();
     }, [resetFilters]);
+
+    const handleOpenChange = (id: number) => {
+        const token = findToken();
+
+        if (!token) setShowDialog(true); 
+        else window.location.href = `/studio?studioId=${id}`;
+    };
     
     if (isLoading) return <div>Loading...</div>;
     if (isError) return <div>Error fetching movies</div>;
@@ -25,7 +33,7 @@ const CinamePageContent = () => {
             <section className="flex flex-col gap-8">
                 <Heading size="xl" className="text-center">Now Showing</Heading>
 
-                <StudioLists studios={studios} onOpenChange={setShowDialog} />
+                <StudioLists studios={studios} onOpenChange={handleOpenChange} />
                 <AuthDialog open={showDialog} onOpenChange={setShowDialog} />
             </section>
         </MainWrapper>
@@ -33,9 +41,9 @@ const CinamePageContent = () => {
 }
 
 const CinamePageComponent = () => (
-    <StudioFiltersProvider>
+    <BookingProvider>
         <CinamePageContent />
-    </StudioFiltersProvider>
+    </BookingProvider>
 );
 
 export const CinamePage = withQueryProvider(CinamePageComponent)

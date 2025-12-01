@@ -13,5 +13,19 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      watch: {
+        usePolling: process.env.NODE_ENV === 'development',
+        ignored: [
+          '**/node_modules/**',
+          '**/.git/**',
+          '**/dist/**',
+          '**/.astro/**',
+        ],
+      },
+    },
+    optimizeDeps: {
+      include: ['react', 'react-dom'],
+    },
   }
 });

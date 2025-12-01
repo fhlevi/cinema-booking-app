@@ -9,24 +9,21 @@ import { StudioProcess } from '@components/organisms/studio-process';
 import { withQueryProvider } from '@providers/query-provider';
 import type { Studio } from '@type/studios';
 import { imagesStudio } from '@constants/studios';
-import { SeatsProvider, useSeats } from '@contexts/seats-context';
 import useQueryParam from '@hooks/use-query-params';
 import { useStudios } from '@hooks/use-studios';
-import { StudioFiltersProvider, useStudioFilters } from '@contexts/studio-filters-context';
+import { BookingProvider, useBooking } from '@contexts/booking-context';
 
 const CinemaStudioPageContent = () => {
     const {
-        locationSelected,
-        setLocationSelected,
-        dateIdSelected,
-        setDateIdSelected,
-        timeIdSelected,
-        setTimeIdSelected
-    } = useStudioFilters();
+        bookingInfo,
+        setLocation,
+        setDate,
+        setTime,
+        resetSeats,
+    } = useBooking();
     
     const studioId = useQueryParam('studioId');
-    const { resetSeats } = useSeats();
-
+    
     const { data: studios = [], isLoading, isError } = useStudios();
 
     const handleProcessed = useCallback((studioId: string|number|null|undefined) => {
@@ -48,23 +45,23 @@ const CinemaStudioPageContent = () => {
                 <div className="flex flex-col gap-[100px]">
                     <LocationSelector
                         locations={locationStudio}
-                        selectedLocation={locationSelected}
-                        onSelectLocation={setLocationSelected}
+                        selectedLocation={bookingInfo.location}
+                        onSelectLocation={setLocation}
                     />
                     <DateSelector
                         dates={datesStudio}
-                        selectedDateId={dateIdSelected}
-                        onSelectDate={setDateIdSelected}
+                        selectedDateId={bookingInfo.date}
+                        onSelectDate={setDate}
                     />
                     <TimeSelector
                         times={timesStudio}
-                        selectedTimeId={timeIdSelected}
-                        onSelectTime={setTimeIdSelected}
+                        selectedTimeId={bookingInfo.time}
+                        onSelectTime={setTime}
                     />
                 </div>
                 <div className='flex flex-col items-end justify-start space-y-[76px]'>
                     <InformationStudio studioImage={studioImage} studioName={studioSelected?.name} />
-                    <StudioProcess location={locationSelected} dateId={dateIdSelected} timeId={timeIdSelected} onClick={handleProcessed} />
+                    <StudioProcess location={bookingInfo.location} dateId={bookingInfo.date} timeId={bookingInfo.time} onClick={handleProcessed} />
                 </div>
             </section>
         </MainWrapper>
@@ -72,11 +69,9 @@ const CinemaStudioPageContent = () => {
 }
 
 const CinemaStudioPageComponent = () => (
-    <SeatsProvider>
-        <StudioFiltersProvider>
-            <CinemaStudioPageContent />
-        </StudioFiltersProvider>
-    </SeatsProvider>
+    <BookingProvider>
+        <CinemaStudioPageContent />
+    </BookingProvider>
 );
 
 export const CinemaStudioPage = withQueryProvider(CinemaStudioPageComponent);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MainWrapper } from '@components/templates/main-wrapper';
 import { SeatSelector } from '@components/organisms/seat-selector';
 import { Heading } from '@components/atoms/heading';
@@ -7,14 +7,20 @@ import type { Seat } from '@type/studios';
 import { Text } from '@components/atoms/text';
 import { Button } from '@components/atoms/button';
 import { formatCurrency } from '@lib/string';
-import { SeatsProvider, useSeats } from '@contexts/seats-context';
+import { BookingProvider, useBooking } from '@contexts/booking-context';
 import useQueryParam from '@hooks/use-query-params';
 import { useSeatsQuery } from '@hooks/use-seats-query';
 
 const CinemaSeatsPageContent = () => {
     const studioId = useQueryParam('studioId');
-    const { seatsId, handleSeatClick, totalPayment, getSeatSelected } = useSeats();
+    const { bookingInfo, handleSeatClick, totalPayment, getSeatSelected, setStudioId } = useBooking();
     const { data: seats = [], isLoading, isError } = useSeatsQuery(studioId);
+
+    useEffect(() => {
+        if (studioId) {
+            setStudioId(studioId);
+        }
+    }, [studioId, setStudioId]);
 
     const handleBack = () => window.history.back();
     const handleOrder = () => window.location.href = '/order';
@@ -25,7 +31,7 @@ const CinemaSeatsPageContent = () => {
         <MainWrapper>
             <section className="flex flex-col gap-8 text-white">
                 <Heading as="h1" size="xl" className='!text-4xl'>Seat</Heading>
-                <SeatSelector seats={seats} onSeatChange={handleSeatClick} seatsId={seatsId} />
+                <SeatSelector seats={seats} onSeatChange={handleSeatClick} seatsId={bookingInfo.seatsId} />
             </section>
             <section className='absolute bottom-0 left-0 h-[141px] border-t border-t-white w-full px-4 flex items-center justify-between'>
                 <div className='flex space-x-[104px]'>
@@ -48,9 +54,9 @@ const CinemaSeatsPageContent = () => {
 }
 
 const CinemaSeatsPageComponent = () => (
-    <SeatsProvider>
+    <BookingProvider>
         <CinemaSeatsPageContent />
-    </SeatsProvider>
+    </BookingProvider>
 );
 
 export const CinemaSeatsPage = withQueryProvider(CinemaSeatsPageComponent);
