@@ -31,7 +31,7 @@ export const MainWrapper = ({ children, section = 'main', contentClassName }: Pr
     return (
         <Wrapper className="w-full">
             {isHeader && <Header />}
-            <div className={cn('relative max-w-[1224px] mx-auto px-[15px] py-[112px] min-h-dvh', contentClassName)}>
+            <div className={cn('relative max-w-[1224px] mx-auto px-[15px] py-[112px] h-full', contentClassName)}>
                 {children}
             </div>
         </Wrapper>

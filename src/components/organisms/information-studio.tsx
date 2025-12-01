@@ -14,7 +14,13 @@ export const InformationStudio = ({
         <section className='h-auto flex flex-col space-y-[35px] w-[250px]'>
             <div className="flex flex-col gap-[10px] text-[14px] font-regular">
                 <Card className="h-[411px] block rounded-[20px] cursor-pointer" boxShadow>
-                    <img src={studioImage} alt="studio-image" className="cover rounded-[20px] h-full" />
+                    {studioImage ? (
+                        <img src={studioImage} alt={studioName || 'studio-image'} className="cover rounded-[20px] h-full" />
+                    ) : (
+                        <div className="w-full h-full bg-gray-800 rounded-[20px] flex items-center justify-center">
+                            <Text>No Image</Text>
+                        </div>
+                    )}
                 </Card>
             </div>
 

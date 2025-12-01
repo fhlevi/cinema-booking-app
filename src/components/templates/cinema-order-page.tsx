@@ -2,9 +2,7 @@ import { MainWrapper } from '@components/templates/main-wrapper';
 import { BookingDetails } from '@components/organisms/booking-details';
 import { TransactionDetails } from '@components/organisms/transaction-details';
 import { CheckoutSection } from '@components/organisms/checkout-section';
-import { useStudios } from '@hooks/use-studios';
 import { datesStudio, timesStudio } from '@constants/studios';
-import { useSeatsQuery } from '@hooks/use-seats-query';
 import { withQueryProvider } from '@providers/query-provider';
 import React from 'react';
 import { BookingProvider, useBooking } from '@contexts/booking-context';
@@ -19,14 +17,10 @@ const formatBookingDate = (timestamp: number): string => {
 };
 
 const CinemaOrderPageContent = () => {
-    const { bookingInfo, getSeatSelected } = useBooking();
-    const { studioId, date: dateId, time: timeId, seatsId } = bookingInfo;
+    const { bookingInfo } = useBooking();
+    const { date: dateId, time: timeId, seatsId, studioName, seatNumbers } = bookingInfo;
 
-    const { data: studios = [] } = useStudios();
-    const { data: seats = [] } = useSeatsQuery(studioId);
-
-    const studio = studios.find(s => s.id === Number(studioId));
-    const movieTitle = studio ? studio.name.toUpperCase() : 'Loading...';
+    const movieTitle = studioName ? studioName.toUpperCase() : 'Loading...';
 
     const dateObj = datesStudio.find(d => d.id === dateId);
     const date = dateObj ? formatBookingDate(dateObj.date) : 'Loading...';
@@ -34,7 +28,6 @@ const CinemaOrderPageContent = () => {
     const timeObj = timesStudio.find(t => t.id === timeId);
     const time = timeObj ? timeObj.time : 'Loading...';
 
-    const seatNumbers = getSeatSelected(seats) || '-';
     const ticketCount = seatsId.length;
 
     const bookingData = {
@@ -42,14 +35,26 @@ const CinemaOrderPageContent = () => {
         date,
         time,
         ticketCount,
-        seatNumbers,
+        seatNumbers: seatNumbers || '-',
+    };
+
+    const seatPrice = 35000;
+    const serviceChargeRate = 0.06;
+    const serviceChargePerSeat = seatPrice * serviceChargeRate;
+    const totalPayment = (seatPrice + serviceChargePerSeat) * ticketCount;
+
+    const transactionData = {
+        ticketCount,
+        seatPrice,
+        serviceChargePerSeat,
+        totalPayment,
     };
 
     return (
-        <MainWrapper contentClassName='flex items-center justify-center'>
+        <MainWrapper contentClassName='h-dvh flex items-center justify-center'>
             <div className='flex flex-col space-y-16 text-white w-[391px]'>
                 <BookingDetails {...bookingData} />
-                <TransactionDetails />
+                <TransactionDetails {...transactionData} />
                 <CheckoutSection />
             </div>
         </MainWrapper>

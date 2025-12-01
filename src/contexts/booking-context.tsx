@@ -8,6 +8,9 @@ interface BookingInfo {
     time: number;
     seatsId: number[];
     studioId: string;
+    studioName: string;
+    studioImage: string;
+    seatNumbers: string;
 }
 
 interface BookingContextType {
@@ -17,6 +20,8 @@ interface BookingContextType {
     setTime: (timeId: number) => void;
     handleSeatClick: (seatId: number) => void;
     setStudioId: (studioId: string) => void;
+    setStudioDetails: (name: string, image: string) => void;
+    setSeatNumbers: (numbers: string) => void;
     totalPayment: number;
     getSeatSelected: (seats: Seat[]) => string;
     resetSeats: () => void;
@@ -31,6 +36,9 @@ const initialBookingInfo: BookingInfo = {
     time: 1,
     seatsId: [],
     studioId: '',
+    studioName: '',
+    studioImage: '',
+    seatNumbers: '',
 };
 
 export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -40,6 +48,12 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const setDate = useCallback((date: number) => setBookingInfo(prev => ({ ...prev, date })), [setBookingInfo]);
     const setTime = useCallback((time: number) => setBookingInfo(prev => ({ ...prev, time })), [setBookingInfo]);
     const setStudioId = useCallback((studioId: string) => setBookingInfo(prev => ({ ...prev, studioId })), [setBookingInfo]);
+    const setStudioDetails = useCallback((name: string, image: string) => {
+        setBookingInfo(prev => ({ ...prev, studioName: name, studioImage: image }));
+    }, [setBookingInfo]);
+    const setSeatNumbers = useCallback((numbers: string) => {
+        setBookingInfo(prev => ({ ...prev, seatNumbers: numbers }));
+    }, [setBookingInfo]);
 
     const handleSeatClick = useCallback((seatId: number) => {
         setBookingInfo(prev => {
@@ -51,7 +65,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }, [setBookingInfo]);
 
     const resetSeats = useCallback(() => {
-        setBookingInfo(prev => ({ ...prev, seatsId: [] }));
+        setBookingInfo(prev => ({ ...prev, seatsId: [], seatNumbers: '' }));
     }, [setBookingInfo]);
 
     const resetFilters = useCallback(() => {
@@ -81,6 +95,8 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
             setTime,
             handleSeatClick,
             setStudioId,
+            setStudioDetails,
+            setSeatNumbers,
             totalPayment,
             getSeatSelected,
             resetSeats,

@@ -8,27 +8,29 @@ import { Text } from '@components/atoms/text';
 import { Button } from '@components/atoms/button';
 import { formatCurrency } from '@lib/string';
 import { BookingProvider, useBooking } from '@contexts/booking-context';
-import useQueryParam from '@hooks/use-query-params';
 import { useSeatsQuery } from '@hooks/use-seats-query';
 
 const CinemaSeatsPageContent = () => {
-    const studioId = useQueryParam('studioId');
-    const { bookingInfo, handleSeatClick, totalPayment, getSeatSelected, setStudioId } = useBooking();
+    const { bookingInfo, handleSeatClick, totalPayment, getSeatSelected, setSeatNumbers } = useBooking();
+    const { studioId } = bookingInfo;
     const { data: seats = [], isLoading, isError } = useSeatsQuery(studioId);
 
+    const seatSelected = getSeatSelected(seats);
+
     useEffect(() => {
-        if (studioId) {
-            setStudioId(studioId);
+        if (seatSelected) {
+            setSeatNumbers(seatSelected);
         }
-    }, [studioId, setStudioId]);
+    }, [seatSelected, setSeatNumbers]);
+
+    if (isLoading) return <div>Loading...</div>;
+    if (isError) return <div>Error fetching seats</div>;
 
     const handleBack = () => window.history.back();
     const handleOrder = () => window.location.href = '/order';
 
-    const seatSelected = getSeatSelected(seats);
-
     return (
-        <MainWrapper>
+        <MainWrapper contentClassName='h-dvh'>
             <section className="flex flex-col gap-8 text-white">
                 <Heading as="h1" size="xl" className='!text-4xl'>Seat</Heading>
                 <SeatSelector seats={seats} onSeatChange={handleSeatClick} seatsId={bookingInfo.seatsId} />

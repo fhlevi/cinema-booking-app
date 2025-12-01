@@ -1,16 +1,12 @@
 import { MainWrapper } from '@components/templates/main-wrapper';
-import { datesStudio, locationStudio, timesStudio } from '@constants/studios';
-import React, { useCallback } from 'react';
+import { datesStudio, locationStudio, timesStudio, imagesStudio } from '@constants/studios';
+import { useCallback, useEffect } from 'react';
 import { LocationSelector } from '@components/organisms/location-selector';
 import { DateSelector } from '@components/organisms/date-selector';
 import { TimeSelector } from '@components/organisms/time-selector';
 import { InformationStudio } from '@components/organisms/information-studio';
 import { StudioProcess } from '@components/organisms/studio-process';
 import { withQueryProvider } from '@providers/query-provider';
-import type { Studio } from '@type/studios';
-import { imagesStudio } from '@constants/studios';
-import useQueryParam from '@hooks/use-query-params';
-import { useStudios } from '@hooks/use-studios';
 import { BookingProvider, useBooking } from '@contexts/booking-context';
 
 const CinemaStudioPageContent = () => {
@@ -21,23 +17,14 @@ const CinemaStudioPageContent = () => {
         setTime,
         resetSeats,
     } = useBooking();
-    
-    const studioId = useQueryParam('studioId');
-    
-    const { data: studios = [], isLoading, isError } = useStudios();
 
-    const handleProcessed = useCallback((studioId: string|number|null|undefined) => {
-        window.location.href = `/seats?studioId=${studioId}`
-    }, [])
+    const handleProcessed = useCallback(() => {
+        window.location.href = `/seats`;
+    }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         resetSeats();
-    }, [resetSeats])
-
-    const studioSelected = studios?.find((studio) => studio.id === Number(studioId)) as Studio;
-    const indexImage = studios.findIndex((studio) => studio.id === Number(studioId)) as number;
-
-    const studioImage = imagesStudio[indexImage] as string;
+    }, [resetSeats]);
 
     return (
         <MainWrapper>
@@ -60,8 +47,16 @@ const CinemaStudioPageContent = () => {
                     />
                 </div>
                 <div className='flex flex-col items-end justify-start space-y-[76px]'>
-                    <InformationStudio studioImage={studioImage} studioName={studioSelected?.name} />
-                    <StudioProcess location={bookingInfo.location} dateId={bookingInfo.date} timeId={bookingInfo.time} onClick={handleProcessed} />
+                    <InformationStudio 
+                        studioImage={bookingInfo.studioImage} 
+                        studioName={bookingInfo.studioName} 
+                    />
+                    <StudioProcess 
+                        location={bookingInfo.location} 
+                        dateId={bookingInfo.date} 
+                        timeId={bookingInfo.time} 
+                        onClick={handleProcessed} 
+                    />
                 </div>
             </section>
         </MainWrapper>

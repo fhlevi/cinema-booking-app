@@ -1,14 +1,42 @@
 import { Text } from '@components/atoms/text';
 import { TransactionItem } from '@components/molecules/transaction-item';
 import { TotalPayment } from '@components/molecules/total-payment';
+import { formatCurrency } from '@lib/string';
 
-export const TransactionDetails = () => {
+interface TransactionDetailsProps {
+    ticketCount: number;
+    seatPrice: number;
+    serviceChargePerSeat: number;
+    totalPayment: number;
+}
+
+export const TransactionDetails = ({
+    ticketCount,
+    seatPrice,
+    serviceChargePerSeat,
+    totalPayment,
+}: TransactionDetailsProps) => {
+    if (ticketCount === 0) {
+        return null;
+    }
+
     return (
         <section className='flex flex-col space-y-2.5'>
             <Text className='text-lg font-medium'>Transaction Detail</Text>
-            <TransactionItem label="REGULAR SEAT" price="RM 55.70" quantity={3} />
-            <TransactionItem label="Service Charge (6%)" price="RM 3.30" quantity={3} />
-            <TotalPayment label="Total payment" amount="RM 62.10" />
+            <TransactionItem
+                label="REGULAR SEAT"
+                price={`Rp ${formatCurrency(seatPrice)}`}
+                quantity={ticketCount}
+            />
+            <TransactionItem
+                label="Service Charge (6%)"
+                price={`Rp ${formatCurrency(serviceChargePerSeat)}`}
+                quantity={ticketCount}
+            />
+            <TotalPayment
+                label="Total payment"
+                amount={`Rp ${formatCurrency(totalPayment)}`}
+            />
         </section>
     );
 };
