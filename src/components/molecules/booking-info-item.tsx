@@ -6,7 +6,7 @@ interface BookingInfoItemProps {
 }
 
 export const BookingInfoItem = ({ label, value }: BookingInfoItemProps) => (
-    <div className='flex flex-col space-y-2'>
+    <div className='flex flex-col space-y-1.5'>
         <Text className='text-lg font-regular'>{label}</Text>
         <Text className='text-2xl font-medium'>{value}</Text>
     </div>

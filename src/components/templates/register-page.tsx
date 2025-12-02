@@ -1,7 +1,7 @@
 import { withQueryProvider } from '@providers/query-provider';
 import { RegisterForm } from '@components/organisms/register-form';
 import { Card } from '@components/atoms/card';
-import { Wrapper } from '@components/templates/wrapper';
+import { Wrapper } from '@components/atoms/wrapper';
 
 const RegisterPageComponent = () => {
     return (

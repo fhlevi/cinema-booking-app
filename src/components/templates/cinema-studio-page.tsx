@@ -1,4 +1,4 @@
-import { MainWrapper } from '@components/templates/main-wrapper';
+import { MainWrapper } from '@components/layouts/main-wrapper';
 import { datesStudio, locationStudio, timesStudio, imagesStudio } from '@constants/studios';
 import { useCallback, useEffect } from 'react';
 import { LocationSelector } from '@components/organisms/location-selector';

@@ -1,4 +1,4 @@
-import { MainWrapper } from '@components/templates/main-wrapper';
+import { MainWrapper } from '@components/layouts/main-wrapper';
 import { StudioLists } from '@components/organisms/movie-lists';
 import { Heading } from '@components/atoms/heading';
 import { AuthDialog } from '@components/molecules/auth-dialog';
@@ -17,6 +17,7 @@ const CinamePageContent = () => {
 
     React.useEffect(() => {
         resetFilters();
+        setStudioId('');
     }, [resetFilters]);
 
     const handleOpenChange = (studio: Studio, image: string) => {

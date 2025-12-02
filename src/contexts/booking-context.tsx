@@ -75,7 +75,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
             date: 1,
             time: 1,
         }));
-    }, [setBookingInfo]);
+    }, [setBookingInfo, setStudioId]);
 
     const totalPayment = 35000 * bookingInfo.seatsId.length;
 

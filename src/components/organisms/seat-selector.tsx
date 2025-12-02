@@ -6,7 +6,7 @@ import type React from 'react';
 interface Props {
     seats: Seat[];
     seatsId: number[];
-    onSeatChange: (seatId: number) => void;
+    onSeatChange: (seat: Seat) => void;
 }
 
 export const SeatSelector = ({
@@ -23,10 +23,10 @@ export const SeatSelector = ({
                     .map((seatVal) => (
                         <SeatBox 
                             key={seatVal.id} 
-                            className='cursor-pointer'
                             seatNumber={seatVal.seat_number} 
+                            disabled={seatVal.is_available}
                             active={seatsId.includes(seatVal.id)}
-                            onClick={() => onSeatChange(seatVal.id)}
+                            onClick={() => onSeatChange(seatVal)}
                         />
                     ))}
             </div>

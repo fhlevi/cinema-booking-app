@@ -19,3 +19,5 @@ export const timesStudio: StudioTime[] = [
     { id: 3, time: '13:30' },
     { id: 4, time: '14:30' },
 ]
+
+export const TABS_FILTER = ['Upcoming', 'History'];

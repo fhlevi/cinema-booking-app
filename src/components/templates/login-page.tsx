@@ -1,7 +1,7 @@
 import { LoginForm } from '@components/organisms/login-form';
 import { Card } from '@components/atoms/card';
 import { ArrowLeft } from 'lucide-react';
-import { MainWrapper } from '@components/templates/main-wrapper';
+import { MainWrapper } from '@components/layouts/main-wrapper';
 import { withQueryProvider } from '@providers/query-provider';
 
 const LoginPageComponent = () => {

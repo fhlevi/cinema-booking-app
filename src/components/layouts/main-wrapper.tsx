@@ -1,5 +1,5 @@
 import React from 'react'
-import { Wrapper } from '@components/templates/wrapper';
+import { Wrapper } from '@components/atoms/wrapper';
 import { Header } from '@components/organisms/header'
 import { cn } from '@lib/cn';
 
@@ -8,6 +8,8 @@ interface Props {
     section?: string;
     contentClassName?: string;
 }
+
+const headerNotAllowed = ['seats', 'order', 'checkout'];
 
 export const MainWrapper = ({ children, section = 'main', contentClassName }: Props) => {
     const [pathname, setPathname] = React.useState<string | null>(null);
@@ -26,12 +28,12 @@ export const MainWrapper = ({ children, section = 'main', contentClassName }: Pr
         )
     }
 
-    const isHeader = !pathname?.includes('seats') && !pathname?.includes('order')
+    const isHeader = !headerNotAllowed.some((path) => pathname?.includes(path));
 
     return (
         <Wrapper className="w-full">
             {isHeader && <Header />}
-            <div className={cn('relative max-w-[1224px] mx-auto px-[15px] py-[112px] h-full', contentClassName)}>
+            <div className={cn('relative max-w-[1424px] mx-auto px-[15px] py-[112px] h-full', contentClassName)}>
                 {children}
             </div>
         </Wrapper>

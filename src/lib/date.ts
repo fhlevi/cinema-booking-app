@@ -32,3 +32,12 @@ export const formatDateLong = (timestamp: number): string => {
     const year = date.getFullYear();
     return `${day} ${month} ${year}`;
 };
+
+export const formatBookingDate = (timestamp: number): string => {
+    const date = new Date(timestamp);
+    const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
+    const day = date.toLocaleDateString('en-US', { day: '2-digit' });
+    const month = date.toLocaleDateString('en-US', { month: 'short' });
+    const year = date.getFullYear();
+    return `${weekday}, ${day} ${month} ${year}`;
+};

@@ -17,6 +17,21 @@ export type Seat = {
     updated_at: string;
 }
 
+export interface Ticket {
+    id: number;
+    booking_code: string;
+    user_id: number;
+    user_name: string;
+    user_email: string;
+    qr_code: string;
+    booking_type: "online" | "offline" | string;
+    status: "active" | "cancelled" | "pending" | string;
+    created_at: string;
+    updated_at: string;
+    studio: Pick<Studio, 'id'|'name'|'total_seats'>;
+    seats: Pick<Seat, 'id'|'seat_number'>[];
+}
+
 export type StudioDate = {
     id: number;
     date: number;

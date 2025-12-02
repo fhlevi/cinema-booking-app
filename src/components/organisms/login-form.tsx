@@ -7,6 +7,7 @@ import {
     FormMessage,
     FormLabel,
 } from '@components/molecules/form';
+import useLocalStorage from '@hooks/use-local-storage';
 import { setToken } from '@lib/cookie';
 import { Submit } from '@radix-ui/react-form'
 import { signIn, verifyToken } from '@services/auth';
@@ -21,12 +22,18 @@ type FormData = {
 
 export const LoginForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
+	const [userInfo, setUserInfo] = useLocalStorage('userInfo', {});
 
 	const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
 	const mutationTokenVerify = useMutation(verifyToken, {
         onSuccess: (response) => {
-			if (response.valid) window.location.href = '/'
+			setUserInfo(response.user);
+
+			if (response.valid) {
+				window.location.href = '/'
+				return;
+			}
         },
         onError: (error) => {
             console.error('Verify failed: ', error)

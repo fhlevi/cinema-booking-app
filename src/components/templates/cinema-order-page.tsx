@@ -1,24 +1,16 @@
-import { MainWrapper } from '@components/templates/main-wrapper';
+import { MainWrapper } from '@components/layouts/main-wrapper';
 import { BookingDetails } from '@components/organisms/booking-details';
 import { TransactionDetails } from '@components/organisms/transaction-details';
 import { CheckoutSection } from '@components/organisms/checkout-section';
 import { datesStudio, timesStudio } from '@constants/studios';
 import { withQueryProvider } from '@providers/query-provider';
-import React from 'react';
 import { BookingProvider, useBooking } from '@contexts/booking-context';
-
-const formatBookingDate = (timestamp: number): string => {
-    const date = new Date(timestamp);
-    const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
-    const day = date.toLocaleDateString('en-US', { day: '2-digit' });
-    const month = date.toLocaleDateString('en-US', { month: 'short' });
-    const year = date.getFullYear();
-    return `${weekday}, ${day} ${month} ${year}`;
-};
+import { formatBookingDate } from '@lib/date';
+import { useCallback } from 'react';
 
 const CinemaOrderPageContent = () => {
     const { bookingInfo } = useBooking();
-    const { date: dateId, time: timeId, seatsId, studioName, seatNumbers } = bookingInfo;
+    const { date: dateId, time: timeId, seatsId, studioName, seatNumbers, studioId } = bookingInfo;
 
     const movieTitle = studioName ? studioName.toUpperCase() : 'Loading...';
 
@@ -50,12 +42,16 @@ const CinemaOrderPageContent = () => {
         totalPayment,
     };
 
+    const handleCheckout = useCallback(() => {
+        window.location.href = '/checkout';
+    }, [studioId]);
+
     return (
         <MainWrapper contentClassName='h-dvh flex items-center justify-center'>
             <div className='flex flex-col space-y-16 text-white w-[391px]'>
                 <BookingDetails {...bookingData} />
                 <TransactionDetails {...transactionData} />
-                <CheckoutSection />
+                <CheckoutSection onCheckout={handleCheckout} />
             </div>
         </MainWrapper>
     )

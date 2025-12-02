@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@components/atoms/button';
 import { findToken, removeToken } from '@lib/cookie';
+import { cn } from '@lib/cn';
 
 export const AuthNav = () => {
     const [isLogin, setIsLogin] = React.useState(false);
@@ -22,10 +23,6 @@ export const AuthNav = () => {
         window.location.reload();
     };
 
-    const handleRegister = () => {
-        window.location.href = '/auth/register';
-    };
-
     if (!isLogin) {
         return (
             <div className="flex gap-[20px] items-center">
@@ -34,25 +31,30 @@ export const AuthNav = () => {
                         <span className="text-[18px]">Login</span>
                     </Button>
                 </a>
-                <Button
-                    className="rounded-[15px] min-w-[100px]"
-                    onClick={handleRegister}
-                    outline
-                >
-                    <span className="text-[18px]">Register</span>
-                </Button>
+                <a href="/auth/register">
+                    <Button className="rounded-[15px] min-w-[100px]" outline>
+                        <span className="text-[18px]">Register</span>
+                    </Button>
+                </a>
             </div>
         );
     }
 
+    const isStudio = pathname?.includes('studio');
+    const isTicket = pathname?.includes('ticket');
+
     return (
         <div className="flex gap-[20px] items-center">
-            {!pathname?.includes('studio') && <p className="text-white text-[18px]">My Ticket</p>}
-            <Button
-                className="rounded-[15px] min-w-[100px]"
-                onClick={handleLogout}
-                danger
-            >
+            {!isStudio && (
+                <a href="/ticket" className={cn(
+                    "text-white text-[18px] hover:border-b-3 hover:border-[#1DE782] py-[10px] cursor-pointer",
+                    {'border-b-3 border-[#1DE782]': isTicket}
+                )}>
+                    My Ticket
+                </a>
+            )}
+
+            <Button className="rounded-[15px] min-w-[100px]" onClick={handleLogout} danger>
                 <span className="text-[18px]">Logout</span>
             </Button>
         </div>
